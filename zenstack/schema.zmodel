@@ -4,23 +4,32 @@ datasource db {
     provider = 'sqlite'
 }
 
-/// User model
 model User {
-    id       Int    @id @default(autoincrement())
-    email    String @unique
-    posts    Post[]
+    id       Int       @id @default(autoincrement())
+    email    String    @unique
+    contents Content[]
 }
 
-/// Post model
-model Post {
+model Content {
     id        Int      @id @default(autoincrement())
+    name      String
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    title     String
-    content   String?
-    slug      String?  @unique
+    owner     User     @relation(fields: [ownerId], references: [id])
+    ownerId   Int
     viewCount Int      @default(0)
-    published Boolean  @default(false)
-    author    User?    @relation(fields: [authorId], references: [id])
-    authorId  Int?
+    type      String
+
+    @@delegate(type)
+}
+
+model Post extends Content {
+    content String
+}
+
+model Image extends Content {
+    data Bytes
+}
+
+model Video extends Content {
+    url String
 }

@@ -27,11 +27,11 @@ export const schema = {
                     unique: true,
                     attributes: [{ name: "@unique" }]
                 },
-                posts: {
-                    name: "posts",
-                    type: "Post",
+                contents: {
+                    name: "contents",
+                    type: "Content",
                     array: true,
-                    relation: { opposite: "author" }
+                    relation: { opposite: "owner" }
                 }
             },
             idFields: ["id"],
@@ -40,8 +40,8 @@ export const schema = {
                 email: { type: "String" }
             }
         },
-        Post: {
-            name: "Post",
+        Content: {
+            name: "Content",
             fields: {
                 id: {
                     name: "id",
@@ -50,33 +50,28 @@ export const schema = {
                     attributes: [{ name: "@id" }, { name: "@default", args: [{ name: "value", value: ExpressionUtils.call("autoincrement") }] }],
                     default: ExpressionUtils.call("autoincrement")
                 },
+                name: {
+                    name: "name",
+                    type: "String"
+                },
                 createdAt: {
                     name: "createdAt",
                     type: "DateTime",
                     attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.call("now") }] }],
                     default: ExpressionUtils.call("now")
                 },
-                updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
-                    updatedAt: true,
-                    attributes: [{ name: "@updatedAt" }]
+                owner: {
+                    name: "owner",
+                    type: "User",
+                    attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array([ExpressionUtils.field("ownerId")]) }, { name: "references", value: ExpressionUtils.array([ExpressionUtils.field("id")]) }] }],
+                    relation: { opposite: "contents", fields: ["ownerId"], references: ["id"] }
                 },
-                title: {
-                    name: "title",
-                    type: "String"
-                },
-                content: {
-                    name: "content",
-                    type: "String",
-                    optional: true
-                },
-                slug: {
-                    name: "slug",
-                    type: "String",
-                    unique: true,
-                    optional: true,
-                    attributes: [{ name: "@unique" }]
+                ownerId: {
+                    name: "ownerId",
+                    type: "Int",
+                    foreignKeyFor: [
+                        "owner"
+                    ]
                 },
                 viewCount: {
                     name: "viewCount",
@@ -84,32 +79,203 @@ export const schema = {
                     attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.literal(0) }] }],
                     default: 0
                 },
-                published: {
-                    name: "published",
-                    type: "Boolean",
-                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.literal(false) }] }],
-                    default: false
-                },
-                author: {
-                    name: "author",
-                    type: "User",
-                    optional: true,
-                    attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array([ExpressionUtils.field("authorId")]) }, { name: "references", value: ExpressionUtils.array([ExpressionUtils.field("id")]) }] }],
-                    relation: { opposite: "posts", fields: ["authorId"], references: ["id"] }
-                },
-                authorId: {
-                    name: "authorId",
+                type: {
+                    name: "type",
+                    type: "String",
+                    isDiscriminator: true
+                }
+            },
+            attributes: [
+                { name: "@@delegate", args: [{ name: "discriminator", value: ExpressionUtils.field("type") }] }
+            ],
+            idFields: ["id"],
+            uniqueFields: {
+                id: { type: "Int" }
+            },
+            isDelegate: true,
+            subModels: ["Post", "Image", "Video"]
+        },
+        Post: {
+            name: "Post",
+            baseModel: "Content",
+            fields: {
+                id: {
+                    name: "id",
                     type: "Int",
-                    optional: true,
+                    id: true,
+                    attributes: [{ name: "@id" }, { name: "@default", args: [{ name: "value", value: ExpressionUtils.call("autoincrement") }] }],
+                    default: ExpressionUtils.call("autoincrement")
+                },
+                name: {
+                    name: "name",
+                    type: "String",
+                    originModel: "Content"
+                },
+                createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.call("now") }] }],
+                    default: ExpressionUtils.call("now")
+                },
+                owner: {
+                    name: "owner",
+                    type: "User",
+                    originModel: "Content",
+                    attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array([ExpressionUtils.field("ownerId")]) }, { name: "references", value: ExpressionUtils.array([ExpressionUtils.field("id")]) }] }],
+                    relation: { opposite: "contents", fields: ["ownerId"], references: ["id"] }
+                },
+                ownerId: {
+                    name: "ownerId",
+                    type: "Int",
+                    originModel: "Content",
                     foreignKeyFor: [
-                        "author"
+                        "owner"
                     ]
+                },
+                viewCount: {
+                    name: "viewCount",
+                    type: "Int",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.literal(0) }] }],
+                    default: 0
+                },
+                type: {
+                    name: "type",
+                    type: "String",
+                    originModel: "Content",
+                    isDiscriminator: true
+                },
+                content: {
+                    name: "content",
+                    type: "String"
                 }
             },
             idFields: ["id"],
             uniqueFields: {
-                id: { type: "Int" },
-                slug: { type: "String" }
+                id: { type: "Int" }
+            }
+        },
+        Image: {
+            name: "Image",
+            baseModel: "Content",
+            fields: {
+                id: {
+                    name: "id",
+                    type: "Int",
+                    id: true,
+                    attributes: [{ name: "@id" }, { name: "@default", args: [{ name: "value", value: ExpressionUtils.call("autoincrement") }] }],
+                    default: ExpressionUtils.call("autoincrement")
+                },
+                name: {
+                    name: "name",
+                    type: "String",
+                    originModel: "Content"
+                },
+                createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.call("now") }] }],
+                    default: ExpressionUtils.call("now")
+                },
+                owner: {
+                    name: "owner",
+                    type: "User",
+                    originModel: "Content",
+                    attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array([ExpressionUtils.field("ownerId")]) }, { name: "references", value: ExpressionUtils.array([ExpressionUtils.field("id")]) }] }],
+                    relation: { opposite: "contents", fields: ["ownerId"], references: ["id"] }
+                },
+                ownerId: {
+                    name: "ownerId",
+                    type: "Int",
+                    originModel: "Content",
+                    foreignKeyFor: [
+                        "owner"
+                    ]
+                },
+                viewCount: {
+                    name: "viewCount",
+                    type: "Int",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.literal(0) }] }],
+                    default: 0
+                },
+                type: {
+                    name: "type",
+                    type: "String",
+                    originModel: "Content",
+                    isDiscriminator: true
+                },
+                data: {
+                    name: "data",
+                    type: "Bytes"
+                }
+            },
+            idFields: ["id"],
+            uniqueFields: {
+                id: { type: "Int" }
+            }
+        },
+        Video: {
+            name: "Video",
+            baseModel: "Content",
+            fields: {
+                id: {
+                    name: "id",
+                    type: "Int",
+                    id: true,
+                    attributes: [{ name: "@id" }, { name: "@default", args: [{ name: "value", value: ExpressionUtils.call("autoincrement") }] }],
+                    default: ExpressionUtils.call("autoincrement")
+                },
+                name: {
+                    name: "name",
+                    type: "String",
+                    originModel: "Content"
+                },
+                createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.call("now") }] }],
+                    default: ExpressionUtils.call("now")
+                },
+                owner: {
+                    name: "owner",
+                    type: "User",
+                    originModel: "Content",
+                    attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array([ExpressionUtils.field("ownerId")]) }, { name: "references", value: ExpressionUtils.array([ExpressionUtils.field("id")]) }] }],
+                    relation: { opposite: "contents", fields: ["ownerId"], references: ["id"] }
+                },
+                ownerId: {
+                    name: "ownerId",
+                    type: "Int",
+                    originModel: "Content",
+                    foreignKeyFor: [
+                        "owner"
+                    ]
+                },
+                viewCount: {
+                    name: "viewCount",
+                    type: "Int",
+                    originModel: "Content",
+                    attributes: [{ name: "@default", args: [{ name: "value", value: ExpressionUtils.literal(0) }] }],
+                    default: 0
+                },
+                type: {
+                    name: "type",
+                    type: "String",
+                    originModel: "Content",
+                    isDiscriminator: true
+                },
+                url: {
+                    name: "url",
+                    type: "String"
+                }
+            },
+            idFields: ["id"],
+            uniqueFields: {
+                id: { type: "Int" }
             }
         }
     },

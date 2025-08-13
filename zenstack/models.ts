@@ -7,11 +7,8 @@
 
 import { type SchemaType as $Schema } from "./schema";
 import { type ModelResult as $ModelResult } from "@zenstackhq/runtime";
-/**
- * User model
- */
 export type User = $ModelResult<$Schema, "User">;
-/**
- * Post model
- */
+export type Content = $ModelResult<$Schema, "Content">;
 export type Post = $ModelResult<$Schema, "Post">;
+export type Image = $ModelResult<$Schema, "Image">;
+export type Video = $ModelResult<$Schema, "Video">;
