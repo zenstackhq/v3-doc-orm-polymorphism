@@ -24,14 +24,9 @@ async function main() {
     await db.user.findFirstOrThrow({ include: { contents: true } })
   );
 
-  console.log('Fetch with base Content model');
-  const content1 = await db.content.findFirstOrThrow();
-  // the return type is a discriminated union
-  if (content1.type === 'Post') {
-    console.log('Got post:', content1.name, content1.content);
-  } else if (content1.type === 'Video') {
-    console.log('Got video:', content1.name, content1.url);
-  }
+  console.log('Fetch with base Content model, result includes sub model fields');
+  const content = await db.content.findFirstOrThrow();
+  console.log(content);
 
   console.log('Delete Videos');
   await db.video.deleteMany();
