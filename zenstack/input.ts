@@ -6,11 +6,12 @@
 /* eslint-disable */
 
 import { type SchemaType as $Schema } from "./schema";
-import type { FindManyArgs as $FindManyArgs, FindUniqueArgs as $FindUniqueArgs, FindFirstArgs as $FindFirstArgs, CreateArgs as $CreateArgs, CreateManyArgs as $CreateManyArgs, CreateManyAndReturnArgs as $CreateManyAndReturnArgs, UpdateArgs as $UpdateArgs, UpdateManyArgs as $UpdateManyArgs, UpdateManyAndReturnArgs as $UpdateManyAndReturnArgs, UpsertArgs as $UpsertArgs, DeleteArgs as $DeleteArgs, DeleteManyArgs as $DeleteManyArgs, CountArgs as $CountArgs, AggregateArgs as $AggregateArgs, GroupByArgs as $GroupByArgs, WhereInput as $WhereInput, SelectInput as $SelectInput, IncludeInput as $IncludeInput, OmitInput as $OmitInput, QueryOptions as $QueryOptions } from "@zenstackhq/orm";
+import type { FindManyArgs as $FindManyArgs, FindUniqueArgs as $FindUniqueArgs, FindFirstArgs as $FindFirstArgs, ExistsArgs as $ExistsArgs, CreateArgs as $CreateArgs, CreateManyArgs as $CreateManyArgs, CreateManyAndReturnArgs as $CreateManyAndReturnArgs, UpdateArgs as $UpdateArgs, UpdateManyArgs as $UpdateManyArgs, UpdateManyAndReturnArgs as $UpdateManyAndReturnArgs, UpsertArgs as $UpsertArgs, DeleteArgs as $DeleteArgs, DeleteManyArgs as $DeleteManyArgs, CountArgs as $CountArgs, AggregateArgs as $AggregateArgs, GroupByArgs as $GroupByArgs, WhereInput as $WhereInput, SelectInput as $SelectInput, IncludeInput as $IncludeInput, OmitInput as $OmitInput, QueryOptions as $QueryOptions } from "@zenstackhq/orm";
 import type { SimplifiedPlainResult as $Result, SelectIncludeOmit as $SelectIncludeOmit } from "@zenstackhq/orm";
 export type UserFindManyArgs = $FindManyArgs<$Schema, "User">;
 export type UserFindUniqueArgs = $FindUniqueArgs<$Schema, "User">;
 export type UserFindFirstArgs = $FindFirstArgs<$Schema, "User">;
+export type UserExistsArgs = $ExistsArgs<$Schema, "User">;
 export type UserCreateArgs = $CreateArgs<$Schema, "User">;
 export type UserCreateManyArgs = $CreateManyArgs<$Schema, "User">;
 export type UserCreateManyAndReturnArgs = $CreateManyAndReturnArgs<$Schema, "User">;
@@ -31,6 +32,7 @@ export type UserGetPayload<Args extends $SelectIncludeOmit<$Schema, "User", true
 export type ContentFindManyArgs = $FindManyArgs<$Schema, "Content">;
 export type ContentFindUniqueArgs = $FindUniqueArgs<$Schema, "Content">;
 export type ContentFindFirstArgs = $FindFirstArgs<$Schema, "Content">;
+export type ContentExistsArgs = $ExistsArgs<$Schema, "Content">;
 export type ContentCreateArgs = $CreateArgs<$Schema, "Content">;
 export type ContentCreateManyArgs = $CreateManyArgs<$Schema, "Content">;
 export type ContentCreateManyAndReturnArgs = $CreateManyAndReturnArgs<$Schema, "Content">;
@@ -51,6 +53,7 @@ export type ContentGetPayload<Args extends $SelectIncludeOmit<$Schema, "Content"
 export type PostFindManyArgs = $FindManyArgs<$Schema, "Post">;
 export type PostFindUniqueArgs = $FindUniqueArgs<$Schema, "Post">;
 export type PostFindFirstArgs = $FindFirstArgs<$Schema, "Post">;
+export type PostExistsArgs = $ExistsArgs<$Schema, "Post">;
 export type PostCreateArgs = $CreateArgs<$Schema, "Post">;
 export type PostCreateManyArgs = $CreateManyArgs<$Schema, "Post">;
 export type PostCreateManyAndReturnArgs = $CreateManyAndReturnArgs<$Schema, "Post">;
@@ -71,6 +74,7 @@ export type PostGetPayload<Args extends $SelectIncludeOmit<$Schema, "Post", true
 export type ImageFindManyArgs = $FindManyArgs<$Schema, "Image">;
 export type ImageFindUniqueArgs = $FindUniqueArgs<$Schema, "Image">;
 export type ImageFindFirstArgs = $FindFirstArgs<$Schema, "Image">;
+export type ImageExistsArgs = $ExistsArgs<$Schema, "Image">;
 export type ImageCreateArgs = $CreateArgs<$Schema, "Image">;
 export type ImageCreateManyArgs = $CreateManyArgs<$Schema, "Image">;
 export type ImageCreateManyAndReturnArgs = $CreateManyAndReturnArgs<$Schema, "Image">;
@@ -91,6 +95,7 @@ export type ImageGetPayload<Args extends $SelectIncludeOmit<$Schema, "Image", tr
 export type VideoFindManyArgs = $FindManyArgs<$Schema, "Video">;
 export type VideoFindUniqueArgs = $FindUniqueArgs<$Schema, "Video">;
 export type VideoFindFirstArgs = $FindFirstArgs<$Schema, "Video">;
+export type VideoExistsArgs = $ExistsArgs<$Schema, "Video">;
 export type VideoCreateArgs = $CreateArgs<$Schema, "Video">;
 export type VideoCreateManyArgs = $CreateManyArgs<$Schema, "Video">;
 export type VideoCreateManyAndReturnArgs = $CreateManyAndReturnArgs<$Schema, "Video">;
